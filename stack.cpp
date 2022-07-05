@@ -27,13 +27,10 @@ template<typename T>
 void stack<T>::realloc() {
 	size_t prev_size = this->occupied_size();
 	size_t to_bump_default = this->size();
-	T* prev_data = this->start;
 	if (this->bump_size != 0)
-		this->start = (T*)malloc(prev_size * sizeof(T) + this->bump_size * sizeof(T));
+		this->start = (T*)::realloc(this->start, prev_size * sizeof(T) + this->bump_size * sizeof(T));
 	else
-		this->start = (T*)malloc(prev_size * sizeof(T) + to_bump_default * sizeof(T));
-	memmove(this->start, prev_data, prev_size * sizeof(T));
-	free(prev_data);
+		this->start = (T*)::realloc(this->start, prev_size * sizeof(T) + to_bump_default * sizeof(T));
 	if (this->bump_size != 0)
 		this->end = this->start + prev_size + this->bump_size;
 	else
